@@ -1,23 +1,23 @@
-# DNS Ad Blocker cu DNS-over-HTTPS
+# DNS Ad Blocker
 
-Un resolver DNS scris în Python care blochează domenii cunoscute pentru reclame și tracking, păstrează un cache simplu și oferă aceeași rezolvare prin DNS-over-HTTPS (DoH).
+## What it is and the problem it solves
 
-## Ce conține
+This project is a small DNS resolver with ad and tracker blocking. It checks requested domains against a blocklist and returns `0.0.0.0` for blocked entries, while forwarding other DNS queries upstream. It also exposes the same resolver through DNS-over-HTTPS, so browsers can use the service without plain DNS configuration.
 
-- `dns_server.py` ascultă pe UDP/53, blochează domeniile din `adservers.txt` cu răspunsul `0.0.0.0` și trimite restul interogărilor către 8.8.8.8.
-- `fastapi_doh.py` expune endpoint-ul DoH compatibil cu `GET` și `POST` la `/dns-query`.
-- `stats.py` produce statistici din jurnalul `blocked_queries.log`.
-- `docker-compose.yml` pornește serviciul DNS și endpoint-ul HTTPS.
+## Tech stack
 
-## Cerințe
+- Python 3
+- Scapy for DNS packet parsing and responses
+- FastAPI and Uvicorn for the DoH endpoint
+- Docker Compose for running DNS and DoH services together
 
-- Docker și Docker Compose pe Linux/VPS pentru rularea pe porturile 53 și 443;
-- un certificat Let's Encrypt valid pentru domeniul configurat în `docker-compose.yml`.
+## Running it
 
-## Rulare
+The Docker setup is intended for a Linux host or VPS because it binds ports 53/UDP and 443/TCP.
 
-1. Schimbă calea și domeniul certificatului din `docker-compose.yml` dacă nu folosești `retele.me`.
-2. Rulează `docker compose up --build` din acest director.
-3. Testează DNS-ul UDP cu `dig @<ip-server> example.com` și DoH cu `https://<domeniu>/dns-query`.
+```bash
+cd adblocker
+docker compose up --build
+```
 
-Jurnalele, certificatele și variabilele de mediu sunt excluse din Git. Lista de blocare este păstrată pentru ca demonstrația să poată fi refăcută.
+Before starting, update the certificate paths and domain in `docker-compose.yml` if you do not use the configured Let's Encrypt certificate. Test UDP DNS with `dig @<server-ip> example.com`; the DoH endpoint is available at `/dns-query`.

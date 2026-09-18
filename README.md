@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a small DNS resolver with ad and tracker blocking. It checks requested domains against a blocklist and returns `0.0.0.0` for blocked entries, while forwarding other DNS queries upstream. It also exposes the same resolver through DNS-over-HTTPS, so browsers can use the service without plain DNS configuration.
+This project is a DNS resolver with ad and tracker blocking. It checks requested domains against a blocklist and returns `0.0.0.0` for blocked entries, while forwarding other DNS queries upstream. It also exposes the same resolver through DNS-over-HTTPS, so browsers can use the service without plain DNS configuration.
 
 ## Tech stack
 

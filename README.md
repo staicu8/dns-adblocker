@@ -1,6 +1,6 @@
 # DNS Ad Blocker
 
-## What it is and the problem it solves
+## Overview
 
 This project is a small DNS resolver with ad and tracker blocking. It checks requested domains against a blocklist and returns `0.0.0.0` for blocked entries, while forwarding other DNS queries upstream. It also exposes the same resolver through DNS-over-HTTPS, so browsers can use the service without plain DNS configuration.
 
@@ -10,6 +10,16 @@ This project is a small DNS resolver with ad and tracker blocking. It checks req
 - Scapy for DNS packet parsing and responses
 - FastAPI and Uvicorn for the DoH endpoint
 - Docker Compose for running DNS and DoH services together
+
+## Project structure
+
+- `dns_server.py` — UDP DNS resolver, blocklist lookup, cache, and upstream forwarding.
+- `fastapi_doh.py` — FastAPI service that forwards DoH requests to the local DNS container.
+- `adservers.txt` — domain blocklist used by the resolver.
+- `stats.py` — reads the blocked-query log and prints domain/company statistics.
+- `requirements.txt` — Python dependencies for the application.
+- `Dockerfile` — application image definition.
+- `docker-compose.yml` — starts the UDP DNS and DoH services.
 
 ## Running it
 

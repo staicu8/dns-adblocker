@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.log
+.env
+*.pem
+*.key
+*.crt
+get-docker.sh

@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  dns_udp:
+    build: .
+    command: python3 dns_server.py
+    ports:
+      - "53:53/udp"
+    volumes:
+      - .:/app
+  dns_doh:
+    build: .
+    command: uvicorn fastapi_doh:app --host 0.0.0.0 --port 443 --ssl-keyfile /certs/privkey.pem --ssl-certfile /certs/fullchain.pem
+    ports:
+      - "443:443/tcp"
+    volumes:
+      - .:/app
+      - /etc/letsencrypt/live/retele.me/privkey.pem:/certs/privkey.pem:ro
+      - /etc/letsencrypt/live/retele.me/fullchain.pem:/certs/fullchain.pem:ro
+    depends_on:
+      - dns_udp
